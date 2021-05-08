@@ -1,0 +1,89 @@
+using Business.Concrete;
+using DataAccess.Concrete.EntityFramework;
+using FormUI.Forms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace FormUI
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            LoginPage();
+            //PersonelTakipContext personelTakipContext = new PersonelTakipContext();
+            ////var checkName = personelTakipContext.Users.FirstOrDefault(x => x.UserName == txtUserName.Text);
+            ////var personel = personelTakipContext.Users.FirstOrDefault(x => x.UserName == txtUserName.Text && x.Password == txtPassword.Text);
+            //if (checkName == null)
+            //{
+            //    MessageBox.Show("Kayýtlý kullanýcý bulunamadý.");
+            //}
+            //else if (personel != null)
+            //{
+            //    string PersonelName = personel.FirstName + " " + personel.Lastname;
+            //    using (Form_Dashboard fd = new Form_Dashboard())
+            //    {
+            //        fd.wellcomePer = PersonelName;
+            //        fd.Owner = this;
+            //        fd.ShowDialog();
+            //        this.Dispose();
+            //    }
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Hatalý þifre. Tekrar deneyiniz. ");
+            //}
+        }
+
+        private void btnAppExit_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+        private void LoginPage()
+        {
+            //burdan mý 
+            UserManager userManager = new UserManager(new EfUserDal());
+            //var userCheck = userManager.CheckIfUserNameExits(txtUserName.Text);
+            var result = userManager.FormLogin(txtUserName.Text, txtPassword.Text);
+            if (result.Success != true) // oldu mu             
+            {
+                
+                //burada bir hata var aaslýnda iki iþ yaptýk kullanýcý var mý varsa git çek gibi birþey yaptýk formlogin sana dataresult ile döndürebilirdi yada bunu hiç kullanmadan aþaðýdaki getbyusernameden çekebilirdin.
+                string PersonelName = "";
+                //string PersonelName = userManager.FormLogin(txtUserName.Text); // sonrasý yok burda get yookki þimdi anlamadým o zaman. neden get ile çaðýrma yapýyordun.
+                //username den firstname ve lastname almaya çalýþacaktým. ok
+                var user = userManager.GetByUserName(txtUserName.Text);
+
+
+                PersonelName = user.Data.FirstName + " " + user.Data.LastName;
+                using (Form_Dashboard fd = new Form_Dashboard())
+                {
+                    fd.wellcomePer = PersonelName;
+                    fd.Owner = this;
+                    fd.ShowDialog();
+                    this.Dispose();
+                }
+
+            }
+            else if (result.Success == false)
+            {
+                //tamamdýr abi bu baya iyi oldu
+                MessageBox.Show(result.Message);    // burda hani hata dönerse onun mersajý mý gelecek ?
+
+            }
+            
+        }
+    }
+}

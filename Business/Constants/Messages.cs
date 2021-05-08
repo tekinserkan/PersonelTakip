@@ -20,7 +20,7 @@ namespace Business.Constants
         public static string UserNotFound = "Kullanıcı Bulunumadı";
         public static string PasswordError = "Parola hatası";
         public static string SuccessfulLogin = "Başarılı giriş";
-        public static string UserAlreadyExists = "Kullanıcı mevcut";
+        public static string UserAlreadyExists = "Kullanıcı adı mevcut. Tekrar deneyiniz";
         public static string AccessTokenCreated = "Token oluşturuldu";
         public static string ProductUpdated = "Ürün başarıyla güncellendi";
         public static string UserNameAlreadyExits = "Bu isimde başka bir kullanıcı var";
@@ -28,8 +28,8 @@ namespace Business.Constants
         public static string UserAdded = "Kullanıcı eklendi";
         public static string UserUpdated = "Kullanıcı güncellendi";
         public static string UserDeleted = "Kullanıcı silindi"; 
-        public static string UserPasswordError = "Hatalı parola";
-        public static string UserNameError = "Kullanıcı adı hatalı";
+        public static string UserPasswordError = "Hatalı parola. Tekrar deneyiniz";
+        public static string UserNameError = "Kullanıcı adı hatalı. Tekrar deneyiniz";
 
     }
 }

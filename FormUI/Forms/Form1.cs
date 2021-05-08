@@ -23,28 +23,7 @@ namespace FormUI
         private void btnLogin_Click(object sender, EventArgs e)
         {
             LoginPage();
-            //PersonelTakipContext personelTakipContext = new PersonelTakipContext();
-            ////var checkName = personelTakipContext.Users.FirstOrDefault(x => x.UserName == txtUserName.Text);
-            ////var personel = personelTakipContext.Users.FirstOrDefault(x => x.UserName == txtUserName.Text && x.Password == txtPassword.Text);
-            //if (checkName == null)
-            //{
-            //    MessageBox.Show("Kayıtlı kullanıcı bulunamadı.");
-            //}
-            //else if (personel != null)
-            //{
-            //    string PersonelName = personel.FirstName + " " + personel.Lastname;
-            //    using (Form_Dashboard fd = new Form_Dashboard())
-            //    {
-            //        fd.wellcomePer = PersonelName;
-            //        fd.Owner = this;
-            //        fd.ShowDialog();
-            //        this.Dispose();
-            //    }
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Hatalı şifre. Tekrar deneyiniz. ");
-            //}
+
         }
 
         private void btnAppExit_Click(object sender, EventArgs e)
@@ -54,31 +33,53 @@ namespace FormUI
         private void LoginPage()
         {
             UserManager userManager = new UserManager(new EfUserDal());
-            var userCheck = userManager.CheckIfUserNameExits(txtUserName.Text);            
-            if (userCheck.Success != true)
+            var result = userManager.FormLogin(txtUserName.Text,txtPassword.Text);
+                        
+            string PersonelName = "";
+            if (result.Success == true)
             {
-                var result = userManager.FormLogin(txtUserName.Text, txtPassword.Text);
-                //string PersonelName = userManager.Get();
-
-                if (result.Success==true)
+                var user = result.Data;
+                PersonelName = user.FirstName + " " + user.LastName;
+                using (Form_Dashboard fd = new Form_Dashboard())
                 {
-                    //PersonelName = userManager.FirstName + " " + personel.Lastname;
-                    using (Form_Dashboard fd = new Form_Dashboard())
-                    {
-                        //fd.wellcomePer = PersonelName;
-                        fd.Owner = this;
-                        fd.ShowDialog();
-                        this.Dispose();
-                    }
-                }else if (result.Success == false)
-                {
-                    MessageBox.Show("Hatalı şifre. Tekrar deneyiniz. ");
+                    fd.wellcomePer = PersonelName;
+                    fd.Owner = this;
+                    fd.ShowDialog();
+                    this.Dispose();
                 }
             }
             else
             {
-                MessageBox.Show("Kayıtlı kullanıcı bulunamadı.");
+                MessageBox.Show(result.Message);
             }
+            
         }
+        //******************************
+        //var userCheck = userManager.CheckIfUserNameExits(txtUserName.Text);            
+        //if (userCheck.Success != true)
+        //{
+        //    var result = userManager.FormLogin(txtUserName.Text, txtPassword.Text);
+        //    string PersonelName = "";
+        //    if (result.Success==true)
+        //    {
+        //        var user = userManager.GetByUserName(txtUserName.Text);
+        //        PersonelName = user.Data.FirstName + " " + user.Data.LastName;
+        //        using (Form_Dashboard fd = new Form_Dashboard())
+        //        {
+        //            fd.wellcomePer = PersonelName;
+        //            fd.Owner = this;
+        //            fd.ShowDialog();
+        //            this.Dispose();
+        //        }
+        //    }else if (result.Success == false)
+        //    {
+        //        MessageBox.Show(result.Message);
+        //    }
+        //}
+        //else
+        //{
+        //    MessageBox.Show(userCheck.Message);
+        //}
+
     }
 }
